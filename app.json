@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.riff_fly.Notes"
     },
     "web": {
       "favicon": "./assets/favicon.png"
