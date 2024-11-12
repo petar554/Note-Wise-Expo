@@ -6,9 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const [user, setUser] = useState(null);
-
   const { setLocalization } = useContext(LocalizationContext);
 
   const login = async ({ username, password, language_id }) => {
