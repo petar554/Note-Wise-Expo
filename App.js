@@ -5,10 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import NotesScreen from "./src/screens/NotesScreen";
 import LoginScreen from "./src/screens/LoginScreen";
+import TestScreen from "./src/screens/TestScreen";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function App() { 
   return (
     <LocalizationProvider>
       <NavigationContainer>
@@ -22,6 +23,11 @@ export default function App() {
             name="CreateNote"
             component={NotesScreen}
             options={{ headerTitle: "Create Note" }}
+          />
+          <Stack.Screen
+            name="TestScreen"
+            component={TestScreen}
+            options={{ headerTitle: "Take Test" }}
           />
 
           {/* Add other screens here */}
