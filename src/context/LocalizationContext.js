@@ -1,3 +1,4 @@
+// LocalizationContext.js
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,47 +9,39 @@ export const LocalizationProvider = ({ children }) => {
 
   useEffect(() => {
     const loadLocalization = async () => {
-      try {
-        const storedLocalization = await AsyncStorage.getItem("localization");
-        if (storedLocalization) {
+      const storedLocalization = await AsyncStorage.getItem("localization");
+      if (storedLocalization) {
+        try {
           const parsedLocalization = JSON.parse(storedLocalization);
           setLocalization(parsedLocalization);
           console.log(
             "Loaded localization from AsyncStorage:",
             parsedLocalization
           );
-        } else {
-          console.log("No localization data found in AsyncStorage.");
+        } catch (error) {
+          console.error(
+            "Failed to parse localization data from AsyncStorage:",
+            error
+          );
+          await AsyncStorage.removeItem("localization");
         }
-      } catch (error) {
-        console.error(
-          "Failed to load localization data from AsyncStorage:",
-          error
-        );
+      } else {
+        console.log("No localization data found in AsyncStorage.");
       }
     };
-
     loadLocalization();
   }, []);
 
   useEffect(() => {
     const saveLocalization = async () => {
       if (Object.keys(localization).length > 0) {
-        try {
-          await AsyncStorage.setItem(
-            "localization",
-            JSON.stringify(localization)
-          );
-          console.log("Updated localization in AsyncStorage:", localization);
-        } catch (error) {
-          console.error(
-            "Failed to save localization data to AsyncStorage:",
-            error
-          );
-        }
+        await AsyncStorage.setItem(
+          "localization",
+          JSON.stringify(localization)
+        );
+        console.log("Updated localization in AsyncStorage:", localization);
       }
     };
-
     saveLocalization();
   }, [localization]);
 

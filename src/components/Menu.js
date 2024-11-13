@@ -9,28 +9,26 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome"; // Using FontAwesome for the close icon
-// import { LocalizationContext } from '../context/LocalizationContext';
+import Icon from "react-native-vector-icons/FontAwesome";
+import { LocalizationContext } from "../context/LocalizationContext";
 
 const { width } = Dimensions.get("window");
-const MENU_WIDTH = width; // 75% of screen width
+const MENU_WIDTH = width; // Full screen width
 
 const Menu = ({ isOpen, onClose }) => {
-  //   const { localization } = useContext(LocalizationContext);
+  const { localization } = useContext(LocalizationContext);
   const navigation = useNavigation();
 
-  const slideAnim = useRef(new Animated.Value(-MENU_WIDTH)).current; // Initial position off-screen
+  const slideAnim = useRef(new Animated.Value(-MENU_WIDTH)).current;
 
   useEffect(() => {
     if (isOpen) {
-      // Slide in
       Animated.timing(slideAnim, {
         toValue: 0,
         duration: 300,
         useNativeDriver: true,
       }).start();
     } else {
-      // Slide out
       Animated.timing(slideAnim, {
         toValue: -MENU_WIDTH,
         duration: 300,
@@ -63,7 +61,7 @@ const Menu = ({ isOpen, onClose }) => {
           onPress={onClose}
           accessibilityLabel="Close Menu"
         >
-          <Icon name="times" size={24} color="#000" />
+          <Icon name="times" size={24} color="#4B5563" />
         </TouchableOpacity>
 
         {/* Navigation Links */}
@@ -73,10 +71,17 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("Notes")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_notes') || 'Notes'}
-            </Text> */}
-            <Text style={styles.linkText}>Notes</Text>
+            <Text style={styles.linkText}>
+              {localization.menu_notes || "notes"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("Notes")}
+          >
+            <Text style={styles.linkText}>
+              {localization.menu_notes || "setup"}
+            </Text>
           </TouchableOpacity>
 
           {/* Create Note Link */}
@@ -84,10 +89,9 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("CreateNote")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_create_note') || 'Create Note'}
-            </Text> */}
-            <Text style={styles.linkText}>Create Note</Text>
+            <Text style={styles.linkText}>
+              {localization.menu_setup || "account"}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -125,18 +129,17 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("Account")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_account') || 'Account'}
-            </Text> */}
-            <Text style={styles.linkText}>Account</Text>
+            <Text style={styles.linkText}>
+              {localization.menu_account || "logout"}
+            </Text>
           </TouchableOpacity>
 
-          {/* Logout Button (If Needed) */}
-          {/* If you decide to add logout functionality in the future, uncomment below */}
+          {/* Logout Button (Removed if not needed) */}
+          {/* If you have a logout function elsewhere or plan to add it later, you can uncomment and adjust the following: */}
           {/* 
           <TouchableOpacity style={styles.link} onPress={handleLogout}>
             <Text style={styles.logoutText}>
-              {localization('menu_logout') || 'Logout'}
+              {localization.menu_logout || "Logout"}
             </Text>
           </TouchableOpacity>
           */}
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
     width: width,
     height: "100%",
     backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 49, // Below the menu
+    zIndex: 49,
   },
   menuContainer: {
     position: "absolute",
@@ -166,32 +169,32 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#FFFFFF",
     zIndex: 50,
-    shadowOffset: { width: 2, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    paddingTop: 40,
+    paddingHorizontal: 20,
   },
   closeButton: {
-    alignSelf: "flex-end",
+    position: "absolute",
+    top: 10,
+    right: 10,
     padding: 10,
   },
   navLinks: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
   },
   link: {
     marginVertical: 15,
     alignSelf: "center",
   },
   linkText: {
-    fontSize: 20,
+    fontSize: 24,
     color: "#4B5563",
-    fontWeight: "500",
+    fontWeight: "bold",
   },
   logoutText: {
-    fontSize: 20,
+    fontSize: 24,
     color: "#DC2626",
-    fontWeight: "500",
+    fontWeight: "bold",
   },
 });

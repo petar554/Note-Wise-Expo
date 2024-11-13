@@ -1,50 +1,49 @@
-import "react-native-gesture-handler";
-import React from "react";
-import { LocalizationProvider } from "./src/context/LocalizationContext";
+// App.js
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import NotesScreen from "./src/screens/NotesScreen";
+import { AuthContext, AuthProvider } from "./src/context/AuthContext";
 import LoginScreen from "./src/screens/LoginScreen";
+import NotesScreen from "./src/screens/NotesScreen";
+import CameraScreen from "./src/screens/CameraScreen";
 import TestScreen from "./src/screens/TestScreen";
 import VerifyAnswerScreen from "./src/screens/VerifyAnswerScreen";
 import TestResultScreen from "./src/screens/TestResultScreen";
+import CreateNote from "./src/screens/CreateNote";
+import { LocalizationProvider } from "./src/context/LocalizationContext";
 
 const Stack = createStackNavigator();
 
-export default function App() { 
+const AppNavigator = () => {
+  const { authToken } = useContext(AuthContext);
+
   return (
     <LocalizationProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Notes">
-          <Stack.Screen
-            name="Notes"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CreateNote"
-            component={NotesScreen}
-            options={{ headerTitle: "Create Note" }}
-          />
-          <Stack.Screen
-            name="TestScreen"
-            component={TestScreen}
-            options={{ headerTitle: "Take Test" }}
-          />
-          <Stack.Screen
-            name="VerifyAnswerScreen"
-            component={VerifyAnswerScreen}
-            options={{ headerTitle: "Verify Answer" }}
-          />
-          <Stack.Screen
-            name="TestResultScreen"
-            component={TestResultScreen}
-            options={{ headerTitle: "Test Results" }}
-          />
-
-          {/* Add other screens here */}
+        <Stack.Navigator>
+          {authToken ? (
+            <>
+              <Stack.Screen name="Notes" component={NotesScreen} />
+              <Stack.Screen name="Camera" component={CameraScreen} />
+              <Stack.Screen name="CreateNote" component={CreateNote} />
+              {/* Other authenticated screens */}
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              {/* Other unauthenticated screens */}
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </LocalizationProvider>
+  );
+};
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppNavigator />
+    </AuthProvider>
   );
 }
