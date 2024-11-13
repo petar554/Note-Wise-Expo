@@ -1,4 +1,3 @@
-// App.js
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -26,6 +25,10 @@ const AppNavigator = () => {
               <Stack.Screen name="Notes" component={NotesScreen} />
               <Stack.Screen name="Camera" component={CameraScreen} />
               <Stack.Screen name="CreateNote" component={CreateNote} />
+              <Stack.Screen name="TestScreen" component={TestScreen} />
+              <Stack.Screen name="VerifyAnswerScreen" component={VerifyAnswerScreen} />
+              <Stack.Screen name="TestResultScreen" component={TestResultScreen} />
+
               {/* Other authenticated screens */}
             </>
           ) : (
