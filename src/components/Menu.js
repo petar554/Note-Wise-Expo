@@ -90,6 +90,36 @@ const Menu = ({ isOpen, onClose }) => {
             <Text style={styles.linkText}>Create Note</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("TestScreen")}
+          >
+            {/* <Text style={styles.linkText}>
+              {localization('menu_create_note') || 'Create Note'}
+            </Text> */}
+            <Text style={styles.linkText}>Taking the test</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("VerifyAnswerScreen")}
+          >
+            {/* <Text style={styles.linkText}>
+              {localization('menu_create_note') || 'Create Note'}
+            </Text> */}
+            <Text style={styles.linkText}>Evaluate user answer</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("TestResultScreen")}
+          >
+            {/* <Text style={styles.linkText}>
+              {localization('menu_create_note') || 'Create Note'}
+            </Text> */}
+            <Text style={styles.linkText}>Test Results</Text>
+          </TouchableOpacity>
+
           {/* Account Link */}
           <TouchableOpacity
             style={styles.link}
@@ -152,6 +182,7 @@ const styles = StyleSheet.create({
   },
   link: {
     marginVertical: 15,
+    alignSelf: "center",
   },
   linkText: {
     fontSize: 20,

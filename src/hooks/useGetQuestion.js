@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosInstance from "./axiosInstance"; 
+import { API_URL, AUTH_TOKEN } from "@env";
 
 const useGetQuestion = () => {
   const [questionData, setQuestionData] = useState(null);
@@ -9,9 +9,31 @@ const useGetQuestion = () => {
   const fetchQuestion = async () => {
     try {
       setLoading(true);
-      // #TODO
-      const response = await axiosInstance.get(`/tests/aca7f7ac-ea58-45c0-8569-7cdd9fe7372d/result`);
-      setQuestionData(response.data);
+
+      const response = await fetch(
+        `${API_URL}/tests/:testId/questions/current`,
+        {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${AUTH_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response Error Text:", errorText);
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Response is not JSON");
+      }
+
+      const data = await response.json();
+      setQuestionData(data);
     } catch (err) {
       setError("Failed to load question.");
       console.error("Error fetching question:", err);

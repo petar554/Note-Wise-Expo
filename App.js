@@ -6,6 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import NotesScreen from "./src/screens/NotesScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import TestScreen from "./src/screens/TestScreen";
+import VerifyAnswerScreen from "./src/screens/VerifyAnswerScreen";
+import TestResultScreen from "./src/screens/TestResultScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +30,16 @@ export default function App() {
             name="TestScreen"
             component={TestScreen}
             options={{ headerTitle: "Take Test" }}
+          />
+          <Stack.Screen
+            name="VerifyAnswerScreen"
+            component={VerifyAnswerScreen}
+            options={{ headerTitle: "Verify Answer" }}
+          />
+          <Stack.Screen
+            name="TestResultScreen"
+            component={TestResultScreen}
+            options={{ headerTitle: "Test Results" }}
           />
 
           {/* Add other screens here */}

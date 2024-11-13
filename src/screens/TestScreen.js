@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,14 +8,51 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import useGetQuestion from "../hooks/useGetQuestion";
+import Menu from "../components/Menu";
+import Icon from "react-native-vector-icons/FontAwesome";
+// import useGetQuestion from "../hooks/useGetQuestion"; // Commented out to disable API call
 
 const TestScreen = () => {
-  const { questionData, loading, error, fetchQuestion } = useGetQuestion();
+  // const { questionData, loading, error, fetchQuestion } = useGetQuestion(); // Commented out API usage
+
+  // Hardcoded response to simulate API data
+  // #TODO
+  const hardcodedQuestionData = {
+    question: "What is the capital of France?",
+    answers: [
+      { letter: "A", text: "Paris" },
+      { letter: "B", text: "Madrid" },
+      { letter: "C", text: "Berlin" },
+    ],
+    question_number: 1,
+    question_total: 2,
+  };
+
+  const [questionData, setQuestionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false); 
+
+  useEffect(() => {
+    // simulate loading time
+    // #TODO
+    setTimeout(() => {
+      setQuestionData(hardcodedQuestionData); //set hardcoded data
+      setLoading(false); // set loading to false after setting data
+    }, 1000); // 1-second delay to simulate loading
+  }, []);
 
   const handleAnswerSelection = (answer) => {
     // handle the answer selection, e.g., save answer, navigate, etc.
-    Alert.alert("Answer Selected", `You selected: ${answer}`);
+    Alert.alert("Answer Selected", `You selected: ${answer.text}`);
+  };
+
+  const openMenu = () => {
+    setMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
   if (loading) {
@@ -30,44 +67,54 @@ const TestScreen = () => {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity onPress={fetchQuestion} style={styles.retryButton}>
-          <Text style={styles.retryText}>Retry</Text>
-        </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* question number and total */}
-      <Text style={styles.questionCounter}>
-        QUESTION {questionData?.questionNumber} / {questionData?.totalQuestions}
-      </Text>
+    <View style={styles.mainContainer}>
+        <ScrollView contentContainerStyle={styles.container}>
+        {/* question number and total */}
+        <Text style={styles.questionCounter}>
+            QUESTION {questionData?.question_number} / {questionData?.question_total}
+        </Text>
 
-      {/* question text */}
-      <Text style={styles.questionText}>{questionData?.question}</Text>
+        {/* question text */}
+        <Text style={styles.questionText}>{questionData?.question}</Text>
 
-      {/* answer options */}
-      <View style={styles.answersContainer}>
-        {questionData?.answers?.map((answer, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.answerButton}
-            onPress={() => handleAnswerSelection(answer)}
-          >
-            <Text style={styles.answerText}>{answer}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+        {/* answer options */}
+        <View style={styles.answersContainer}>
+            {questionData?.answers?.map((answer, index) => (
+            <TouchableOpacity
+                key={index}
+                style={styles.answerButton}
+                onPress={() => handleAnswerSelection(answer)}
+            >
+                <Text style={styles.answerText}>
+                {answer.letter} - {answer.text}
+                </Text>
+            </TouchableOpacity>
+            ))}
+        </View>
+        </ScrollView>
+        <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
+            <Icon name="bars" size={24} color="#000" />
+        </TouchableOpacity>
+
+        <Menu isOpen={menuOpen} onClose={closeMenu} />
+    </View>
   );
 };
 
 export default TestScreen;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#F3F4F6",
+  },
   container: {
-    padding: 16,
+    paddingTop: 200,
     alignItems: "center",
     backgroundColor: "#F3F4F6",
   },
@@ -86,20 +133,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
-  retryButton: {
-    padding: 10,
-    backgroundColor: "blue",
-    borderRadius: 5,
-  },
-  retryText: {
-    color: "white",
-    fontWeight: "bold",
-  },
   questionCounter: {
     fontSize: 14,
+    alignItems: "center",
     color: "#6B7280",
     marginBottom: 8,
-    alignSelf: "flex-start",
   },
   questionText: {
     fontSize: 20,
@@ -109,16 +147,17 @@ const styles = StyleSheet.create({
   },
   answersContainer: {
     width: "100%",
+    marginTop: 30,
     alignItems: "center",
   },
   answerButton: {
-    width: "90%",
+    width: "85%",
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor: "#FFFFFF",
     borderColor: "#D1D5DB",
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 25,
     marginBottom: 12,
     alignItems: "center",
   },
@@ -126,4 +165,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1F2937",
   },
+  menuButton: {
+    position: "absolute",
+    bottom: 70,
+    right: 20,
+    backgroundColor: "rgba(255, 255, 255, 0)", 
+    borderRadius: 25,
+    padding: 10,
+    elevation: 4, // shadow for Android
+    shadowColor: "#000", // shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  }
 });
