@@ -9,6 +9,8 @@ import TestScreen from "./src/screens/TestScreen";
 import VerifyAnswerScreen from "./src/screens/VerifyAnswerScreen";
 import TestResultScreen from "./src/screens/TestResultScreen";
 import CreateNote from "./src/screens/CreateNote";
+import NotesListScreen from "./src/screens/NotesListScreen";
+import NotesSummaryScreen from "./src/screens/NotesSummaryScreen";
 import { LocalizationProvider } from "./src/context/LocalizationContext";
 
 const Stack = createStackNavigator();
@@ -28,7 +30,8 @@ const AppNavigator = () => {
               <Stack.Screen name="TestScreen" component={TestScreen} />
               <Stack.Screen name="VerifyAnswerScreen" component={VerifyAnswerScreen} />
               <Stack.Screen name="TestResultScreen" component={TestResultScreen} />
-
+              <Stack.Screen name="NotesListScreen" component={NotesListScreen} />
+              <Stack.Screen name="NotesSummaryScreen" component={NotesSummaryScreen} />
               {/* Other authenticated screens */}
             </>
           ) : (

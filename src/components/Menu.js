@@ -98,9 +98,6 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("TestScreen")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_create_note') || 'Create Note'}
-            </Text> */}
             <Text style={styles.linkText}>Taking the test</Text>
           </TouchableOpacity>
 
@@ -108,9 +105,6 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("VerifyAnswerScreen")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_create_note') || 'Create Note'}
-            </Text> */}
             <Text style={styles.linkText}>Evaluate user answer</Text>
           </TouchableOpacity>
 
@@ -118,10 +112,21 @@ const Menu = ({ isOpen, onClose }) => {
             style={styles.link}
             onPress={() => handleNavigation("TestResultScreen")}
           >
-            {/* <Text style={styles.linkText}>
-              {localization('menu_create_note') || 'Create Note'}
-            </Text> */}
             <Text style={styles.linkText}>Test Results</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("NotesListScreen")}
+          >
+            <Text style={styles.linkText}>List of notes</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("NotesSummaryScreen")}
+          >
+            <Text style={styles.linkText}>Notes summary</Text>
           </TouchableOpacity>
 
           {/* Account Link */}
