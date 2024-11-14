@@ -3,6 +3,7 @@ import { API_URL, AUTH_TOKEN } from "@env";
 
 const useVerifyAnswer = () => {
   const [status, setStatus] = useState(null); 
+  const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -31,6 +32,7 @@ const useVerifyAnswer = () => {
 
       const data = await response.json();
       setStatus(data.answer_status_id === 1 ? "Correct" : "Incorrect");
+      setComment(data.comment || "");
     } catch (err) {
       setError("Failed to verify answer.");
       console.error("Error verifying answer:", err);
@@ -39,7 +41,7 @@ const useVerifyAnswer = () => {
     }
   };
 
-  return { status, loading, error, verifyAnswer };
+  return { status, comment, loading, error, verifyAnswer };
 };
 
 export default useVerifyAnswer;

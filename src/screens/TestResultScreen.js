@@ -7,17 +7,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import useGetTestResult from "../hooks/useGetTestResult";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const TestResultScreen = () => {
-  const { score, loading, error } = useGetTestResult();
+  const route = useRoute();
+  const { testId } = route.params;
+  const { score, loading, error } = useGetTestResult(testId);
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleTakeAnotherTest = () => {
-    navigation.navigate("TestScreen"); 
+    navigation.navigate("TestScreen");
   };
 
   const openMenu = () => {
@@ -129,8 +131,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0)",
     borderRadius: 25,
     padding: 10,
-    elevation: 4, // shadow for Android
-    shadowColor: "#000", // shadow for iOS
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,

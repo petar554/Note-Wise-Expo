@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -6,37 +6,20 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { GestureHandlerRootView, PanGestureHandler, Swipeable } from "react-native-gesture-handler";
+import { GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
+import useVerifyAnswer from "../hooks/useVerifyAnswer";
 
-const VerifyAnswerScreen = ({ navigation }) => {
-  const [status, setStatus] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [comment, setComment] = useState("");
+const VerifyAnswerScreen = ({ navigation, route }) => {
+  const { testId, questionNumber, answer } = route.params;
+  const { status, comment, loading, verifyAnswer } = useVerifyAnswer();
 
   useEffect(() => {
-    // simulate API response 
-    // #TODO
-    const simulatedResponse = {
-      answer_status_id: 1,
-      comment: "Retrospection is not part of the photosynthesis",
-    };
-
-    // simulate loading time
-    // #TODO
-    setTimeout(() => {
-      setStatus(simulatedResponse.answer_status_id === 1 ? "Correct" : "Incorrect");
-      setComment(simulatedResponse.comment);
-      setLoading(false);
-    }, 1000); // 1 second delay to simulate network request
-  }, []);
-
-//   const handleSwipeContinue = () => {
-//     navigation.navigate("Notes"); // #TODO
-//   };
+    verifyAnswer(testId, questionNumber, answer);
+  }, [testId, questionNumber, answer]);
 
   const handleSwipe = (event) => {
     if (event.nativeEvent.translationX > 50) { 
-      navigation.navigate("TestScreen"); // #TODO
+      navigation.navigate("TestScreen"); 
     }
   };
 
@@ -49,15 +32,17 @@ const VerifyAnswerScreen = ({ navigation }) => {
 
           {!loading && status && (
             <Image
-              source={require("../../assets/noun-high-five-1154833-rbg.png")}
+              source={
+                status === "Correct"
+                  ? require("../../assets/noun-high-five-1154833-rbg.png")
+                  : require("../../assets/negative-vote.png") 
+              }
               style={styles.icon}
             />
           )}
 
           {!loading && status && (
-            <Text style={styles.statusText}>
-              {status}
-            </Text>
+            <Text style={styles.statusText}>{status}</Text>
           )}
 
           {!loading && comment && <Text style={styles.commentText}>{comment}</Text>}

@@ -10,41 +10,27 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import useGetQuestion from "../hooks/useGetQuestion"; // Commented out to disable API call
+import useGetQuestion from "../hooks/useGetQuestion";
+import { useNavigation } from "@react-navigation/native";
 
 const TestScreen = () => {
-  // const { questionData, loading, error, fetchQuestion } = useGetQuestion(); // Commented out API usage
-
-  // Hardcoded response to simulate API data
-  // #TODO
-  const hardcodedQuestionData = {
-    question: "What is the capital of France?",
-    answers: [
-      { letter: "A", text: "Paris" },
-      { letter: "B", text: "Madrid" },
-      { letter: "C", text: "Berlin" },
-    ],
-    question_number: 1,
-    question_total: 2,
-  };
-
-  const [questionData, setQuestionData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const { questionData, loading, testId, error } = useGetQuestion();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    // simulate loading time
-    // #TODO
-    setTimeout(() => {
-      setQuestionData(hardcodedQuestionData); //set hardcoded data
-      setLoading(false); // set loading to false after setting data
-    }, 1000); // 1-second delay to simulate loading
-  }, []);
+    // if questionData is null, meaning the end of the test
+    if (questionData === null && !loading) {
+      navigation.navigate("TestResultScreen", { testId }); // navigate to TestResultScreen
+    }
+  }, [questionData, loading]);
 
   const handleAnswerSelection = (answer) => {
-    // handle the answer selection, e.g., save answer, navigate, etc.
-    Alert.alert("Answer Selected", `You selected: ${answer.text}`);
+    navigation.navigate("VerifyAnswerScreen", {
+      testId,
+      questionNumber: questionData?.question_number,
+      answer: answer.letter,
+    });
   };
 
   const openMenu = () => {
@@ -73,35 +59,33 @@ const TestScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
-        <ScrollView contentContainerStyle={styles.container}>
-        {/* question number and total */}
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.questionCounter}>
-            QUESTION {questionData?.question_number} / {questionData?.question_total}
+          QUESTION {questionData?.question_number} / {questionData?.question_total}
         </Text>
 
-        {/* question text */}
         <Text style={styles.questionText}>{questionData?.question}</Text>
 
-        {/* answer options */}
         <View style={styles.answersContainer}>
-            {questionData?.answers?.map((answer, index) => (
+          {questionData?.answers?.map((answer, index) => (
             <TouchableOpacity
-                key={index}
-                style={styles.answerButton}
-                onPress={() => handleAnswerSelection(answer)}
+              key={index}
+              style={styles.answerButton}
+              onPress={() => handleAnswerSelection(answer)}
             >
-                <Text style={styles.answerText}>
+              <Text style={styles.answerText}>
                 {answer.letter} - {answer.text}
-                </Text>
+              </Text>
             </TouchableOpacity>
-            ))}
+          ))}
         </View>
-        </ScrollView>
-        <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-            <Icon name="bars" size={24} color="#000" />
-        </TouchableOpacity>
+      </ScrollView>
 
-        <Menu isOpen={menuOpen} onClose={closeMenu} />
+      <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
+        <Icon name="bars" size={24} color="#000" />
+      </TouchableOpacity>
+
+      <Menu isOpen={menuOpen} onClose={closeMenu} />
     </View>
   );
 };
@@ -172,10 +156,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0)", 
     borderRadius: 25,
     padding: 10,
-    elevation: 4, // shadow for Android
-    shadowColor: "#000", // shadow for iOS
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-  }
+  },
 });

@@ -1,24 +1,44 @@
 import { useState, useEffect } from "react";
+import { API_URL, AUTH_TOKEN } from "@env";
 
-const useGetTestResult = () => {
+const useGetTestResult = (testId) => {
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Simulate an API response
-    const simulatedResponse = {
-      score: 97, // This is the score to display
-      display_icon: "string", // Ignored for the UI
-      display_text: "string", // Ignored for the UI
-    };
+  const fetchTestResult = async () => {
+    try {
+      setLoading(true);
 
-    // Simulate loading time
-    setTimeout(() => {
-      setScore(simulatedResponse.score);
+      const response = await fetch(`${API_URL}/tests/${testId}/result`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response Error Text:", errorText);
+        throw new Error("Failed to load test result");
+      }
+
+      const data = await response.json();
+      setScore(data.score); 
+    } catch (err) {
+      setError("Failed to load test result.");
+      console.error("Error fetching test result:", err);
+    } finally {
       setLoading(false);
-    }, 1000); // 1-second delay to simulate network request
-  }, []);
+    }
+  };
+
+  useEffect(() => {
+    if (testId) {
+      fetchTestResult();
+    }
+  }, [testId]);
 
   return { score, loading, error };
 };

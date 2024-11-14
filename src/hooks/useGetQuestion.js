@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-import { API_URL, AUTH_TOKEN } from "@env";
+import { API_URL, AUTH_TOKEN, TEST_ID } from "@env";
 
 const useGetQuestion = () => {
   const [questionData, setQuestionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [testId] = useState(TEST_ID); 
 
   const fetchQuestion = async () => {
     try {
       setLoading(true);
 
       const response = await fetch(
-        `${API_URL}/tests/:testId/questions/current`,
+        // #todo: use test_id from the previous API response
+        `${API_URL}/tests/${testId}/questions/current`,
         {
           method: "GET",
           headers: {
@@ -25,11 +27,6 @@ const useGetQuestion = () => {
         const errorText = await response.text();
         console.error("Response Error Text:", errorText);
         throw new Error(`Network response was not ok: ${response.status}`);
-      }
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Response is not JSON");
       }
 
       const data = await response.json();
@@ -46,7 +43,7 @@ const useGetQuestion = () => {
     fetchQuestion();
   }, []);
 
-  return { questionData, loading, error, fetchQuestion };
+  return { questionData, loading, testId, error, fetchQuestion };
 };
 
 export default useGetQuestion;

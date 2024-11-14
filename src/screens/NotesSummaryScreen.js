@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
   iconButton: {
     padding: 12,
     borderRadius: 25,
-    elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -196,8 +195,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0)",
     padding: 12,
     borderRadius: 25,
-    elevation: 4,
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
