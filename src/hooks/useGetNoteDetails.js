@@ -1,31 +1,70 @@
 import { useState, useEffect } from "react";
+import { API_URL, AUTH_TOKEN } from "@env";
 
 const useGetNoteDetails = (noteId) => {
   const [noteDetails, setNoteDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // simulate an API response
-    const simulatedResponse = {
-      name: "NIT, human",
-      hero_image: "", 
-      created_at: "2024-09-22T10:20:30Z",
-      status_id: 3,
-      learning_scores: [
-        { completed_dt: "2024-09-22T14:18:00Z", score: 63 },
-        { completed_dt: "2024-09-23T18:25:00Z", score: 85 },
-        { completed_dt: "2024-09-24T17:36:00Z", score: 98 },
-      ],
-    };
+  const fetchNoteDetails = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    setTimeout(() => {
-      setNoteDetails(simulatedResponse);
+      const response = await fetch(`${API_URL}/notes/${noteId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response Error Text:", errorText);
+        throw new Error("Failed to fetch note details.");
+      }
+
+      const data = await response.json();
+      setNoteDetails(data);
+    } catch (err) {
+      console.error("Error fetching note details:", err);
+      setError("Failed to load note details.");
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
+  };
+
+  const deleteNote = async (noteId) => {
+    try {
+      const response = await fetch(`${API_URL}/notes/${noteId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response Error Text:", errorText);
+        throw new Error("Failed to delete note.");
+      }
+
+      console.log("Note deleted successfully.");
+    } catch (err) {
+      console.error("Error deleting note:", err);
+      throw new Error("Failed to delete note.");
+    }
+  };
+
+  useEffect(() => {
+    if (noteId) {
+      fetchNoteDetails();
+    }
   }, [noteId]);
 
-  return { noteDetails, loading, error };
+  return { noteDetails, loading, error, deleteNote };
 };
 
 export default useGetNoteDetails;

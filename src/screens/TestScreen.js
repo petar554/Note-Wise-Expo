@@ -18,12 +18,9 @@ const TestScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    // if questionData is null, meaning the end of the test
-    if (questionData === null && !loading) {
-      navigation.navigate("TestResultScreen", { testId }); // navigate to TestResultScreen
-    }
-  }, [questionData, loading]);
+  if (questionData === null && !loading) {
+    navigation.navigate("TestResultScreen", { testId }); // navigate to TestResultScreen
+  }
 
   const handleAnswerSelection = (answer) => {
     navigation.navigate("VerifyAnswerScreen", {

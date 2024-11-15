@@ -23,14 +23,20 @@ const useGetQuestion = () => {
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Response Error Text:", errorText);
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
+    console.log("Response Status:", response.status);
+    const responseText = await response.text();
+    console.log("Response Text:", responseText);
 
-      const data = await response.json();
+    if (!responseText) {
+      throw new Error("Empty response from server");
+    }
+
+    if (responseText) {
+      const data = JSON.parse(responseText);
       setQuestionData(data);
+    } else {
+      const data = null; 
+    }
     } catch (err) {
       setError("Failed to load question.");
       console.error("Error fetching question:", err);

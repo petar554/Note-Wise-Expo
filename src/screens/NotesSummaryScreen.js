@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from "react-native";
 import useGetNoteDetails from "../hooks/useGetNoteDetails";
-import useDeleteNote from "../hooks/useDeleteNote";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -17,18 +16,29 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const NotesSummaryScreen = () => {
   const route = useRoute();
   const noteId = route.params?.noteId;
-  const { noteDetails, loading, error } = useGetNoteDetails(noteId);
-  const { deleteNote } = useDeleteNote();
+  const { noteDetails, loading, error, deleteNote } = useGetNoteDetails(noteId);
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     Alert.alert("Confirm Delete", "Are you sure you want to delete this note?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: () => deleteNote(noteId), style: "destructive" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteNote(noteId);
+            Alert.alert("Success", "Note deleted successfully.");
+            navigation.goBack(); // Navigate back to the notes list
+          } catch (err) {
+            Alert.alert("Error", "Failed to delete the note.");
+          }
+        },
+      },
     ]);
   };
 

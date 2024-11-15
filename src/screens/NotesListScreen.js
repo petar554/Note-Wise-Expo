@@ -26,12 +26,12 @@ const NotesListScreen = () => {
   };
 
   const handleNoteClick = (note) => {
-    // #TODO
-    navigation.navigate("TestScreen", { notesId: note.notes_id });
+    navigation.navigate("NotesSummaryScreen", { notesId: note.notes_id });
   };
 
+  // #todo
+  // - Button "Create notes" navigates user to screen "2. Create new notes"
   const handleCreateNote = () => {
-    // #TODO
     navigation.navigate("TestScreen");
   };
 
@@ -46,7 +46,7 @@ const NotesListScreen = () => {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Failed to load notes.</Text>
+        <Text style={styles.errorText}>{error}</Text>
       </View>
     );
   }
@@ -56,14 +56,18 @@ const NotesListScreen = () => {
       <Text style={styles.title}>NOTES TO STUDY</Text>
 
       <ScrollView contentContainerStyle={styles.notesContainer}>
-        {notes.map((note) => (
-          <TouchableOpacity
-            key={note.notes_id}
-            onPress={() => handleNoteClick(note)}
-          >
-            <Text style={styles.noteText}>{note.name}</Text>
-          </TouchableOpacity>
-        ))}
+        {notes.length > 0 ? (
+          notes.map((note) => (
+            <TouchableOpacity
+              key={note.notes_id}
+              onPress={() => handleNoteClick(note)}
+            >
+              <Text style={styles.noteText}>{note.name}</Text>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <Text style={styles.noNotesText}>No notes available.</Text>
+        )}
       </ScrollView>
 
       <TouchableOpacity style={styles.createButton} onPress={handleCreateNote}>
@@ -121,6 +125,10 @@ const styles = StyleSheet.create({
     color: "#1F2937",
     marginVertical: 10,
   },
+  noNotesText: {
+    fontSize: 16,
+    color: "#6B7280",
+  },
   createButton: {
     position: "absolute",
     width: "50%",
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#1F2937",
     marginBottom: 20,
-    bottom: 50
+    bottom: 50,
   },
   createButtonText: {
     color: "black",
@@ -143,7 +151,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 70,
     right: 20,
-    backgroundColor: "rgba(255, 255, 255, 0)", 
+    backgroundColor: "rgba(255, 255, 255, 0)",
     borderRadius: 25,
     padding: 10,
     shadowOffset: { width: 0, height: 2 },
