@@ -15,8 +15,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 const NotesSummaryScreen = () => {
   const route = useRoute();
-  const noteId = route.params?.noteId;
-  const { noteDetails, loading, error, deleteNote } = useGetNoteDetails(noteId);
+  const notesId = route.params?.notesId;
+  const { noteDetails, loading, error, deleteNote } = useGetNoteDetails(notesId);
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,6 +24,7 @@ const NotesSummaryScreen = () => {
   const closeMenu = () => setMenuOpen(false);
 
   const handleDelete = async () => {
+    debugger;
     Alert.alert("Confirm Delete", "Are you sure you want to delete this note?", [
       { text: "Cancel", style: "cancel" },
       {
@@ -31,7 +32,7 @@ const NotesSummaryScreen = () => {
         style: "destructive",
         onPress: async () => {
           try {
-            await deleteNote(noteId);
+            await deleteNote(notesId);
             Alert.alert("Success", "Note deleted successfully.");
             navigation.goBack(); // Navigate back to the notes list
           } catch (err) {
@@ -43,7 +44,7 @@ const NotesSummaryScreen = () => {
   };
 
   const handleStartTest = () => {
-    navigation.navigate("TestScreen", { noteId });
+    navigation.navigate("TestScreen", { notesId });
   };
 
   if (loading) {

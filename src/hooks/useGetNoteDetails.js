@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL, AUTH_TOKEN } from "@env";
 
-const useGetNoteDetails = (noteId) => {
+const useGetNoteDetails = (notesId) => {
   const [noteDetails, setNoteDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const useGetNoteDetails = (noteId) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_URL}/notes/${noteId}`, {
+      const response = await fetch(`${API_URL}/notes/${notesId}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${AUTH_TOKEN}`,
@@ -35,9 +35,10 @@ const useGetNoteDetails = (noteId) => {
     }
   };
 
-  const deleteNote = async (noteId) => {
+  const deleteNote = async (notesId) => {
+    debugger
     try {
-      const response = await fetch(`${API_URL}/notes/${noteId}`, {
+      const response = await fetch(`${API_URL}/notes/${notesId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${AUTH_TOKEN}`,
@@ -59,10 +60,10 @@ const useGetNoteDetails = (noteId) => {
   };
 
   useEffect(() => {
-    if (noteId) {
+    if (notesId) {
       fetchNoteDetails();
     }
-  }, [noteId]);
+  }, [notesId]);
 
   return { noteDetails, loading, error, deleteNote };
 };
