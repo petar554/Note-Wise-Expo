@@ -58,12 +58,12 @@ const NotesListScreen = () => {
       <ScrollView contentContainerStyle={styles.notesContainer}>
         {notes.length > 0 ? (
           // #todo	
-          notes.slice(0, 3).map((note, i) => (
+          notes.slice(0, 3).map((note) => (
             <TouchableOpacity
               key={note.notes_id}
               onPress={() => handleNoteClick(note)}
             >
-              <Text style={styles.noteText}>Note {i}</Text>
+              <Text style={styles.noteText}>{note.name}</Text>
             </TouchableOpacity>
           ))
         ) : (
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   notesContainer: {
     alignItems: "center",
-    paddingBottom: 20,
+    padding: 30,
   },
   noteText: {
     fontSize: 20,

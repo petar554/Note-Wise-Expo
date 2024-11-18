@@ -5,21 +5,30 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import useGetTestResult from "../hooks/useGetTestResult";
+import useCreateTest from "../hooks/useCreateTest";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const TestResultScreen = () => {
   const route = useRoute();
-  const { testId } = route.params;
-  const { score, loading, error } = useGetTestResult(testId);
+  const { testId: oldTestId } = route.params || {};
+  const { score, loading: resultLoading, error: resultError } = useGetTestResult(oldTestId);
+
+  const { testId, loading: createLoading, createTest } = useCreateTest();
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleTakeAnotherTest = () => {
-    navigation.navigate("TestScreen");
+  const handleTakeAnotherTest = async () => {
+    const newTestId = await createTest();
+    if (newTestId) {
+      navigation.navigate("TestScreen", { testId: newTestId });
+    } else {
+      Alert.alert("Error", "Failed to create a new test. Please try again.");
+    }
   };
 
   const openMenu = () => {
@@ -30,7 +39,7 @@ const TestResultScreen = () => {
     setMenuOpen(false);
   };
 
-  if (loading) {
+  if (resultLoading || createLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -38,7 +47,7 @@ const TestResultScreen = () => {
     );
   }
 
-  if (error) {
+  if (resultError) {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>Failed to load score.</Text>

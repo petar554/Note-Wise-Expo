@@ -7,13 +7,13 @@ const useVerifyAnswer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const verifyAnswer = async (testId, questionNumber, answer) => {
+  const verifyAnswer = async (finalTestId, questionNumber, answer) => {
     try {
       setLoading(true);
       setError(null);
 
       const response = await fetch(
-        `${API_URL}/tests/${testId}/questions/${questionNumber}/answer`,
+        `${API_URL}/tests/${finalTestId}/questions/${questionNumber}/answer`,
         {
           method: "POST",
           headers: {

@@ -6,21 +6,30 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
 import useGetQuestion from "../hooks/useGetQuestion";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const TestScreen = () => {
-  const { questionData, loading, testId, error } = useGetQuestion();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const route = useRoute();
   const navigation = useNavigation();
+  const passedTestId = route.params?.testId;
+  const { questionData, loading, testId, error } = useGetQuestion(passedTestId);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  if (questionData === null && !loading) {
-    navigation.navigate("TestResultScreen", { testId }); // navigate to TestResultScreen
-  }
+  useEffect(() => {
+    if (!testId) {
+      console.error("No testId available. Unable to load questions.");
+    }
+  }, [testId]);
+
+  useEffect(() => {
+    if (questionData === null && !loading) {
+      navigation.navigate("TestResultScreen", { testId }); 
+    }
+  }, [questionData, loading, navigation]);
 
   const handleAnswerSelection = (answer) => {
     navigation.navigate("VerifyAnswerScreen", {
@@ -95,7 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F4F6",
   },
   container: {
-    paddingTop: 200,
+    paddingTop: 100,
     alignItems: "center",
     backgroundColor: "#F3F4F6",
   },

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { API_URL, AUTH_TOKEN, TEST_ID } from "@env";
 
-const useGetQuestion = () => {
+const useGetQuestion = (initialTestId) => {
   const [questionData, setQuestionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [testId] = useState(TEST_ID); 
+  const [testId, setTestId] = useState(initialTestId || TEST_ID); // #todo use test_id from the previous API response, ot test_id from TestResultScreen
 
   const fetchQuestion = async () => {
     try {
@@ -45,7 +45,7 @@ const useGetQuestion = () => {
     fetchQuestion();
   }, []);
 
-  return { questionData, loading, testId, error, fetchQuestion };
+  return { questionData, loading, testId, error, fetchQuestion, setTestId };
 };
 
 export default useGetQuestion;
