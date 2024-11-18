@@ -63,6 +63,10 @@ const TestScreen = () => {
     );
   }
 
+  if (questionData === null && !loading) {
+    return null; 
+  }
+
   return (
     <View style={styles.mainContainer}>
       <ScrollView contentContainerStyle={styles.container}>

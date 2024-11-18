@@ -8,7 +8,8 @@ import CameraScreen from "./src/screens/CameraScreen";
 import TestScreen from "./src/screens/TestScreen";
 import VerifyAnswerScreen from "./src/screens/VerifyAnswerScreen";
 import TestResultScreen from "./src/screens/TestResultScreen";
-import CreateNote from "./src/screens/CreateNote";
+import CreateNewNoteScreen from "./src/screens/CreateNewNoteScreen";
+import CaptureImagesScreen from "./src/screens/CaptureImagesScreen";
 import NotesListScreen from "./src/screens/NotesListScreen";
 import NotesSummaryScreen from "./src/screens/NotesSummaryScreen";
 import { LocalizationProvider } from "./src/context/LocalizationContext";
@@ -24,9 +25,11 @@ const AppNavigator = () => {
         <Stack.Navigator>
           {authToken ? (
             <>
-              <Stack.Screen name="Notes" component={NotesScreen} />
-              <Stack.Screen name="Camera" component={CameraScreen} />
-              <Stack.Screen name="CreateNote" component={CreateNote} />
+              <Stack.Screen name="LoginScreen" component={LoginScreen} />
+              {/* <Stack.Screen name="Camera" component={CameraScreen} /> */}
+              {/* <Stack.Screen name="CreateNote" component={CreateNote} /> */}
+              <Stack.Screen name="CreateNewNoteScreen" component={CreateNewNoteScreen} />
+              <Stack.Screen name="CaptureImagesScreen" component={CaptureImagesScreen} />
               <Stack.Screen name="TestScreen" component={TestScreen} />
               <Stack.Screen name="VerifyAnswerScreen" component={VerifyAnswerScreen} />
               <Stack.Screen name="TestResultScreen" component={TestResultScreen} />

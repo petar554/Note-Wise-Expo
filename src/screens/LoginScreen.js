@@ -41,7 +41,7 @@ const LoginScreen = () => {
     try {
       await login(formData);
       console.log("Login successful.");
-      navigation.navigate("CreateNote");
+      navigation.navigate("CreateNewNoteScreen");
     } catch (err) {
       console.error("Login Error:", err);
       Alert.alert("Error", err.message);
