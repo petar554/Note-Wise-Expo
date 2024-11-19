@@ -1,4 +1,5 @@
-import { API_URL, AUTH_TOKEN } from "@env";
+import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useAddImageToNote = () => {
   const addImageToNote = async (notesId, imageUri) => {
@@ -10,10 +11,15 @@ const useAddImageToNote = () => {
     });
 
     try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      if (!authToken) {
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+      
       const response = await fetch(`${API_URL}/notes/${notesId}/images`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${AUTH_TOKEN}`,
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "multipart/form-data",
         },
         body: formData,

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, Alert } from "react-native";
-import { CameraView, CameraType, useCameraPermissions, PermissionResponse } from "expo-camera";
+import { StyleSheet, TouchableOpacity, View, Image, Alert } from "react-native";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import CameraIcon from "../../assets/camera.png";
 
 type CameraComponentProps = {
   onCapture: (uri: string) => void;
@@ -13,7 +14,7 @@ export default function CameraComponent({ onCapture }: CameraComponentProps) {
 
   useEffect(() => {
     (async () => {
-      const [permission] = await useCameraPermissions(); // extract permission object
+      const [permission] = await useCameraPermissions();
       setHasPermission(permission?.status === "granted");
     })();
   }, []);
@@ -33,35 +34,19 @@ export default function CameraComponent({ onCapture }: CameraComponentProps) {
     }
   };
 
-  const toggleCameraType = () => {
-    setCameraType((prevType) => (prevType === "back" ? "front" : "back"));
-  };
-
-  // if (hasPermission === null) {
-  //   return <Text>Requesting camera permissions...</Text>;
-  // }
-
-  // if (!hasPermission) {
-  //   return <Text>No access to camera</Text>;
-  // }
-
   return (
     <View style={styles.container}>
       <CameraView
         style={styles.camera}
         facing={cameraType}
-        ref={(ref) => (cameraRef.current = ref)} // assign camera reference
+        ref={(ref) => (cameraRef.current = ref)}
         onCameraReady={() => console.log("Camera is ready")}
-      >
-        <View style={styles.controls}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleCapture}>
-            <Text style={styles.text}>Capture</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      />
+      <View style={styles.controls}>
+        <TouchableOpacity style={styles.cameraButtonCircle} onPress={handleCapture}>
+          <Image source={CameraIcon} style={styles.cameraIcon} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -75,18 +60,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   controls: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    position: "absolute",
+    bottom: 70,
+    width: "100%",
+    alignItems: "center",
   },
-  button: {
-    padding: 10,
-    backgroundColor: "white",
-    borderRadius: 5,
+  cameraButtonCircle: {
+    backgroundColor: "#000",
+    borderRadius: 50,
+    width: 60,
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  text: {
-    color: "black",
-    fontWeight: "bold",
+  cameraIcon: {
+    width: 60,
+    height: 40,
   },
 });

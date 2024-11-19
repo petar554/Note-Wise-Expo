@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { API_URL, AUTH_TOKEN } from "@env";
+import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useCreateNote = () => {
   const [loading, setLoading] = useState(false);
@@ -8,10 +9,15 @@ const useCreateNote = () => {
   const createNote = async () => {
     try {
       setLoading(true);
+      const authToken = await AsyncStorage.getItem("authToken");
+      if (!authToken) {
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+
       const response = await fetch(`${API_URL}/notes`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${AUTH_TOKEN}`,
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
       });
