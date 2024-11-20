@@ -5,6 +5,7 @@ import useAddImageToNote from "../hooks/useAddImageToNote";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CameraIcon from "../../assets/camera.png";
 import Menu from "../components/Menu";
+import { useNavigation } from "@react-navigation/native";
 
 const CaptureImagesScreen = ({ route }) => {
   const { notesId } = route.params;
@@ -14,6 +15,7 @@ const CaptureImagesScreen = ({ route }) => {
   const [imageCount, setImageCount] = useState(0);
   const [showCamera, setShowCamera] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigation = useNavigation();
 
   const handleCapture = async (imageUri) => {
     setLastCapturedImage(imageUri); // save last captured image
@@ -43,16 +45,20 @@ const CaptureImagesScreen = ({ route }) => {
       ) : (
         <View style={styles.main}>
           {lastCapturedImage && (
-            <Image
-              source={{ uri: lastCapturedImage }}
-              style={styles.lastCapturedImage}
-              resizeMode="contain"
-            />
-          )}
+            <View style={styles.lastCapturedImageContainer}>
+                <Image
+                source={{ uri: lastCapturedImage }}
+                style={styles.lastCapturedImage}
+                />
+            </View>
+            )}
           {thumbnail && (
+            
             <View style={styles.thumbnailContainer}>
-              <Image source={{ uri: thumbnail }} style={styles.thumbnail} />
-              <Text style={styles.imageCount}>{imageCount}</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("ReviewCapturedPicturesScreen", { notesId })}>
+                <Image source={{ uri: thumbnail }} style={styles.thumbnail} />
+                <Text style={styles.imageCount}>{imageCount}</Text>
+              </TouchableOpacity>
             </View>
           )}
           <TouchableOpacity style={styles.cameraButton} onPress={() => setShowCamera(true)}>
@@ -64,7 +70,7 @@ const CaptureImagesScreen = ({ route }) => {
       )}
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
         <Icon name="bars" size={24} color="#000" />
-        </TouchableOpacity>
+      </TouchableOpacity>
       <Menu isOpen={menuOpen} onClose={closeMenu} />
     </View>
   );
@@ -76,15 +82,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F4F6",
   },
   main: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1
   },
   lastCapturedImage: {
     width: "100%",
     height: "100%",
-    marginBottom: 300,
-  },
+    paddingBottom: 150, // #todo: fix this
+    resizeMode: "contain",
+  },  
   thumbnailContainer: {
     position: "absolute",
     bottom: 80,
@@ -113,14 +118,14 @@ const styles = StyleSheet.create({
   cameraButtonCircle: {
     backgroundColor: "#000",
     borderRadius: 50,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
   },
   menuButton: {
     position: "absolute",

@@ -24,7 +24,6 @@ const NotesSummaryScreen = () => {
   const closeMenu = () => setMenuOpen(false);
 
   const handleDelete = async () => {
-    debugger;
     Alert.alert("Confirm Delete", "Are you sure you want to delete this note?", [
       { text: "Cancel", style: "cancel" },
       {
@@ -67,8 +66,7 @@ const NotesSummaryScreen = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>{noteDetails?.name}</Text>
-        <Text style={styles.createdDate}>
-          created: {new Date(noteDetails?.created_at).toLocaleDateString()}
+        <Text style={styles.createdDate}>created: {new Date(noteDetails?.created_at).toLocaleDateString()}
         </Text>
 
         <View style={styles.learningScoreContainer}>

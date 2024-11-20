@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { API_URL, AUTH_TOKEN } from "@env";
+import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useGetNoteDetails = (notesId) => {
   const [noteDetails, setNoteDetails] = useState(null);
@@ -14,7 +15,7 @@ const useGetNoteDetails = (notesId) => {
       const response = await fetch(`${API_URL}/notes/${notesId}`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
         },
       });
@@ -36,12 +37,11 @@ const useGetNoteDetails = (notesId) => {
   };
 
   const deleteNote = async (notesId) => {
-    debugger
     try {
       const response = await fetch(`${API_URL}/notes/${notesId}`, {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
         },
       });

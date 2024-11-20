@@ -10,6 +10,9 @@ import VerifyAnswerScreen from "./src/screens/VerifyAnswerScreen";
 import TestResultScreen from "./src/screens/TestResultScreen";
 import CreateNewNoteScreen from "./src/screens/CreateNewNoteScreen";
 import CaptureImagesScreen from "./src/screens/CaptureImagesScreen";
+import ReviewCapturedPicturesScreen from "./src/screens/ReviewCapturedPicturesScreen";
+import GeneratingNotesScreen from "./src/screens/GeneratingNotesScreen";
+import NotesPreparedScreen from "./src/screens/NotesPreparedScreen";
 import NotesListScreen from "./src/screens/NotesListScreen";
 import NotesSummaryScreen from "./src/screens/NotesSummaryScreen";
 import { LocalizationProvider } from "./src/context/LocalizationContext";
@@ -30,6 +33,9 @@ const AppNavigator = () => {
               {/* <Stack.Screen name="CreateNote" component={CreateNote} /> */}
               <Stack.Screen name="CreateNewNoteScreen" component={CreateNewNoteScreen} />
               <Stack.Screen name="CaptureImagesScreen" component={CaptureImagesScreen} />
+              <Stack.Screen name="ReviewCapturedPicturesScreen" component={ReviewCapturedPicturesScreen} options={{ headerShown: false }}/>
+              <Stack.Screen name="GeneratingNotesScreen" component={GeneratingNotesScreen} options={{ headerShown: false }}/>
+              <Stack.Screen name="NotesPreparedScreen" component={NotesPreparedScreen} options={{ headerShown: false }}/>
               <Stack.Screen name="TestScreen" component={TestScreen} />
               <Stack.Screen name="VerifyAnswerScreen" component={VerifyAnswerScreen} />
               <Stack.Screen name="TestResultScreen" component={TestResultScreen} />

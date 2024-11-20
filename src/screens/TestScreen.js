@@ -15,8 +15,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const TestScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const { testId: initialTestId } = route.params;
   const passedTestId = route.params?.testId;
-  const { questionData, loading, testId, error } = useGetQuestion(passedTestId);
+  const { questionData, loading, testId, error } = useGetQuestion(passedTestId || initialTestId);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { API_URL, AUTH_TOKEN } from "@env";
+import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useGetTestResult = (testId) => {
   const [score, setScore] = useState(null);
@@ -13,7 +14,7 @@ const useGetTestResult = (testId) => {
       const response = await fetch(`${API_URL}/tests/${testId}/result`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${AUTH_TOKEN}`,
+          Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
         },
       });

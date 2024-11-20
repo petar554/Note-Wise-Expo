@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    paddingBottom: 150,
   },
   camera: {
     flex: 1,
@@ -68,13 +69,13 @@ const styles = StyleSheet.create({
   cameraButtonCircle: {
     backgroundColor: "#000",
     borderRadius: 50,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   cameraIcon: {
-    width: 60,
-    height: 40,
+    width: 50,
+    height: 50,
   },
 });

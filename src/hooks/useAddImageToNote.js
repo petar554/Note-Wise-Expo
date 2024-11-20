@@ -11,16 +11,11 @@ const useAddImageToNote = () => {
     });
 
     try {
-      const authToken = await AsyncStorage.getItem("authToken");
-      if (!authToken) {
-        throw new Error("Authentication token not found. Please log in again.");
-      }
-      
       const response = await fetch(`${API_URL}/notes/${notesId}/images`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
+           "Content-Type": "multipart/form-data",
         },
         body: formData,
       });
@@ -32,7 +27,7 @@ const useAddImageToNote = () => {
       const data = await response.json();
       return data; // { image_id, thumbnail_image, number_of_images }
     } catch (error) {
-      console.error("Error uploading image:", error);
+        console.error("Error uploading image:", error);
       throw error;
     }
   };
