@@ -7,13 +7,19 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import useCreateNote from "../hooks/useCreateNote";
+import Menu from "../components/Menu";
+
+const { width } = Dimensions.get("window");
+const scale = (size) => (width / 375) * size;
 
 const CreateNewNoteScreen = () => {
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { createNote } = useCreateNote();
   const navigation = useNavigation();
 
@@ -29,6 +35,14 @@ const CreateNewNoteScreen = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const openMenu = () => {
+    setMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
   return (
@@ -52,9 +66,10 @@ const CreateNewNoteScreen = () => {
           <Text style={styles.buttonText}>Start</Text>
         )}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuButton}>
+      <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
         <Icon name="bars" size={24} color="#000" />
       </TouchableOpacity>
+      <Menu isOpen={menuOpen} onClose={closeMenu} />
     </View>
   );
 };
@@ -93,23 +108,35 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   button: {
-    backgroundColor: "#1F2937",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    position: "absolute",
+    bottom: 70,
+    right: 100,
+    width: "50%",
+    height: scale(45),
+    backgroundColor: "white",
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: scale(50),
+    alignSelf: "center",
+    borderWidth: 1,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
     fontSize: 16,
-    color: "#fff",
+    color: "#000",
     fontWeight: "bold",
   },
   menuButton: {
     position: "absolute",
-    bottom: 20,
+    bottom: 70,
     right: 20,
+    backgroundColor: "rgba(255, 255, 255, 0)",
+    borderRadius: 25,
+    padding: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
 });

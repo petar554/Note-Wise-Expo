@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import useGetNoteDetails from "../hooks/useGetNoteDetails";
+import useNotesGeneration from "../hooks/useNotesGeneration"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -17,6 +18,7 @@ const NotesSummaryScreen = () => {
   const route = useRoute();
   const notesId = route.params?.notesId;
   const { noteDetails, loading, error, deleteNote } = useGetNoteDetails(notesId);
+  const { startTest } = useNotesGeneration(); 
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -42,8 +44,9 @@ const NotesSummaryScreen = () => {
     ]);
   };
 
-  const handleStartTest = () => {
-    navigation.navigate("TestScreen", { notesId });
+  const handleStartTest = async () => {
+    const { test_id } = await startTest(notesId);
+    navigation.navigate("TestScreen", { testId: test_id });
   };
 
   if (loading) {
@@ -73,7 +76,7 @@ const NotesSummaryScreen = () => {
           <Text style={styles.learningScoreTitle}>LEARNING SCORE</Text>
           {noteDetails?.learning_scores.map((score, index) => (
             <View key={index} style={styles.scoreItem}>
-              <Text>{new Date(score.completed_dt).toLocaleString()}</Text>
+              <Text>{new Date(score.completed_at).toLocaleString()}</Text>
               <Text style={styles.scoreText}>{score.score}%</Text>
             </View>
           ))}
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
   scoreItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "60%",
+    width: "70%",
     marginBottom: 10,
   },
   scoreText: {

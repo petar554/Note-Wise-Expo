@@ -43,7 +43,7 @@ const GeneratingNotesScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Generating Notes</Text>
-      <Text style={styles.status}>Status: {status === 1 || status === 2 ? "Please wait" : "Completed"}</Text>
+      <Text style={styles.status}>Please wait...</Text>
 
       {heroImage && <Image source={{ uri: heroImage }} style={styles.heroImage} />}
 

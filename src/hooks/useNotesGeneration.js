@@ -21,7 +21,7 @@ const useNotesGeneration = () => {
         const response = await fetch(`${API_URL}/notes/${notesId}`, {
             method: "GET",
             headers: {
-            Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
+              	Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
             },
         });
         

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import {
   View,
   Text,
@@ -56,19 +56,23 @@ const NotesListScreen = () => {
       <Text style={styles.title}>NOTES TO STUDY</Text>
 
       <ScrollView contentContainerStyle={styles.notesContainer}>
-        {notes.length > 0 ? (
-          // #todo	
-          notes.slice(0, 3).map((note) => (
-            <TouchableOpacity
-              key={note.notes_id}
-              onPress={() => handleNoteClick(note)}
-            >
-              <Text style={styles.noteText}>{note.name}</Text>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <Text style={styles.noNotesText}>No notes available.</Text>
-        )}
+      {notes.length > 0 ? (
+        notes.map((note) => {
+          if (note.notes_id) {
+            return (
+              <TouchableOpacity
+                key={note.notes_id}
+                onPress={() => handleNoteClick(note)}
+              >
+                <Text style={styles.noteText}>{note.name}</Text>
+              </TouchableOpacity>
+            );
+          }
+          return null; 
+        })
+      ) : (
+        <Text style={styles.noNotesText}>No notes available.</Text>
+      )}
       </ScrollView>
 
       <TouchableOpacity style={styles.createButton} onPress={handleCreateNote}>
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F3F4F6",
-    paddingTop: 150,
+    paddingVertical: 200
   },
   loadingContainer: {
     flex: 1,

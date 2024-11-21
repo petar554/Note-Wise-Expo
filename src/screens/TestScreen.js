@@ -10,14 +10,15 @@ import {
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
 import useGetQuestion from "../hooks/useGetQuestion";
+import { useNotesContext } from "../context/NotesContext"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const TestScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { testId: initialTestId } = route.params;
-  const passedTestId = route.params?.testId;
-  const { questionData, loading, testId, error } = useGetQuestion(passedTestId || initialTestId);
+  const initialTestId = route.params?.testId;
+  const { notesId } = useNotesContext(); 
+  const { questionData, loading, testId, error } = useGetQuestion(initialTestId);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const TestScreen = () => {
 
   useEffect(() => {
     if (questionData === null && !loading) {
-      navigation.navigate("TestResultScreen", { testId }); 
+      navigation.navigate("TestResultScreen", { testId: testId, notesId: notesId }); 
     }
   }, [questionData, loading, navigation]);
 

@@ -69,85 +69,31 @@ const Menu = ({ isOpen, onClose }) => {
           {/* Notes Link */}
           <TouchableOpacity
             style={styles.link}
-            onPress={() => handleNavigation("Notes")}
-          >
-            <Text style={styles.linkText}>
-              {localization.menu_notes || "notes"}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => handleNavigation("Notes")}
-          >
-            <Text style={styles.linkText}>
-              {localization.menu_notes || "setup"}
-            </Text>
-          </TouchableOpacity>
-
-          {/* Create Note Link */}
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => handleNavigation("CreateNote")}
-          >
-            <Text style={styles.linkText}>
-              {localization.menu_setup || "account"}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => handleNavigation("TestScreen")}
-          >
-            <Text style={styles.linkText}>Taking the test</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => handleNavigation("VerifyAnswerScreen")}
-          >
-            <Text style={styles.linkText}>Evaluate user answer</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => handleNavigation("TestResultScreen")}
-          >
-            <Text style={styles.linkText}>Test Results</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.link}
             onPress={() => handleNavigation("NotesListScreen")}
           >
-            <Text style={styles.linkText}>List of notes</Text>
+            <Text style={styles.linkText}>notes</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.link}
-            onPress={() => handleNavigation("NotesSummaryScreen")}
+            onPress={() => handleNavigation("LoginScreen")}
           >
-            <Text style={styles.linkText}>Notes summary</Text>
+            <Text style={styles.linkText}>setup</Text>
           </TouchableOpacity>
 
-          {/* Account Link */}
           <TouchableOpacity
             style={styles.link}
-            onPress={() => handleNavigation("Account")}
+            onPress={() => handleNavigation("LoginScreen")}
           >
-            <Text style={styles.linkText}>
-              {localization.menu_account || "logout"}
-            </Text>
+            <Text style={styles.linkText}>account</Text>
           </TouchableOpacity>
 
-          {/* Logout Button (Removed if not needed) */}
-          {/* If you have a logout function elsewhere or plan to add it later, you can uncomment and adjust the following: */}
-          {/* 
-          <TouchableOpacity style={styles.link} onPress={handleLogout}>
-            <Text style={styles.logoutText}>
-              {localization.menu_logout || "Logout"}
-            </Text>
+          <TouchableOpacity
+            style={styles.link}
+            onPress={() => handleNavigation("LoginScreen")}
+          >
+            <Text style={styles.linkText}>logout</Text>
           </TouchableOpacity>
-          */}
         </View>
       </Animated.View>
     </>
@@ -171,10 +117,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: MENU_WIDTH,
-    height: "100%",
+    height: Dimensions.get("window").height, // full height of the screen
     backgroundColor: "#FFFFFF",
     zIndex: 50,
-    paddingTop: 40,
+    paddingBottom: 100,
     paddingHorizontal: 20,
   },
   closeButton: {

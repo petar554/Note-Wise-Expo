@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,25 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { useNotesContext } from "../context/NotesContext";
 import useNotesGeneration from "../hooks/useNotesGeneration"; 
 import Menu from "../components/Menu";
+import OakTreeImage from "../../assets/noun-oak-tree-6542509.png";
 
 const NotesPreparedScreen = ({ route, navigation }) => {
   const { noteDetails, notesId } = route.params;
   const { startTest } = useNotesGeneration(); 
-  const [noteName, setNoteName] = useState(noteDetails.name);
+  const [noteName, setNoteName] = useState(noteDetails?.name);
+  const { setNotesId } = useNotesContext();
+
+  useEffect(() => {
+    setNotesId(notesId); 
+  }, [notesId]);
 
   const handleStartTest = async () => {
     try {
       const { test_id } = await startTest(notesId);
-      navigation.navigate("TestScreen", { testId: test_id });
+      navigation.navigate("TestScreen", { testId: test_id, notesId: notesId });
     } catch (error) {
       Alert.alert("Error", "Failed to start the test. Please try again.");
     }
@@ -34,9 +41,8 @@ const NotesPreparedScreen = ({ route, navigation }) => {
         placeholder="Edit Note Name"
         placeholderTextColor="#999"
       />
-      {noteDetails.hero_image && (
-        <Image source={{ uri: `data:image/jpeg;base64,${noteDetails.hero_image}` }} style={styles.heroImage}/>
-      )}
+      {/* #todo: use image from the API */}
+      <Image source={OakTreeImage} style={styles.heroImage} />
       <Text style={styles.subtitle}>Let's check your knowledge</Text>
 
       <TouchableOpacity style={styles.takeTestButton} onPress={handleStartTest}>
@@ -72,9 +78,10 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   heroImage: {
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
     resizeMode: "contain",
+    marginTop: 50,
     marginBottom: 16,
   },
   subtitle: {

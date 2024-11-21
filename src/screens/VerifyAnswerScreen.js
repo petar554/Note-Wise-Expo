@@ -17,10 +17,9 @@ const VerifyAnswerScreen = ({ navigation, route }) => {
     verifyAnswer(testId, questionNumber, answer);
   }, [testId, questionNumber, answer]);
 
-  // test commit
   const handleSwipe = (event) => {
     if (event.nativeEvent.translationX > 50) { 
-      navigation.navigate("TestScreen"); 
+      navigation.navigate("TestScreen", { testId: testId }); 
     }
   };
 

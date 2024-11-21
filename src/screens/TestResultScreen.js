@@ -8,24 +8,27 @@ import {
   Alert,
 } from "react-native";
 import useGetTestResult from "../hooks/useGetTestResult";
-import useCreateTest from "../hooks/useCreateTest";
+import useNotesGeneration from "../hooks/useNotesGeneration"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNotesContext } from "../context/NotesContext"; 
 import Menu from "../components/Menu";
 import Icon from "react-native-vector-icons/FontAwesome";
+
 
 const TestResultScreen = () => {
   const route = useRoute();
   const { testId: oldTestId } = route.params || {};
   const { score, loading: resultLoading, error: resultError } = useGetTestResult(oldTestId);
+  const { notesId } = useNotesContext(); 
 
-  const { testId, loading: createLoading, createTest } = useCreateTest();
+  const { startTest } = useNotesGeneration(); 
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleTakeAnotherTest = async () => {
-    const newTestId = await createTest();
-    if (newTestId) {
-      navigation.navigate("TestScreen", { testId: newTestId });
+    const { test_id } = await startTest(notesId);
+    if (test_id) {
+      navigation.navigate("TestScreen", { testId: test_id } );
     } else {
       Alert.alert("Error", "Failed to create a new test. Please try again.");
     }
@@ -39,7 +42,7 @@ const TestResultScreen = () => {
     setMenuOpen(false);
   };
 
-  if (resultLoading || createLoading) {
+  if (resultLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
