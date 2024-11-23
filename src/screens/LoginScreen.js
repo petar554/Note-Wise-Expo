@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import useLogin from "../hooks/useLogin";
+import useGetUserNotes from "../hooks/useGetUserNotes";
 import ClapIcon from "../svg/Clap";
 
 const { width } = Dimensions.get("window");
@@ -21,6 +22,7 @@ const scale = (size) => (width / 375) * size;
 
 const LoginScreen = () => {
   const { login, loading, error } = useLogin();
+  const { notes, loading: notesLoading, error: notesError } = useGetUserNotes();
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
@@ -40,8 +42,14 @@ const LoginScreen = () => {
   const handleSubmit = async () => {
     try {
       await login(formData);
-      console.log("Login successful.");
-      navigation.navigate("CreateNewNoteScreen");
+      if (notesLoading) {
+        return;
+      }
+      if (notes.length === 0) {
+        navigation.navigate("CreateNewNoteScreen");
+      } else {
+        navigation.navigate("NotesListScreen");
+      }
     } catch (err) {
       console.error("Login Error:", err);
       Alert.alert("Error", err.message);

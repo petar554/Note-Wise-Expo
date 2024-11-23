@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
 import Menu from "../components/Menu";
-import Icon from "react-native-vector-icons/FontAwesome";
+import commonStyles from "../styles/commonStyles";
 import useGetQuestion from "../hooks/useGetQuestion";
 import { useNotesContext } from "../context/NotesContext"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -41,13 +42,8 @@ const TestScreen = () => {
     });
   };
 
-  const openMenu = () => {
-    setMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const openMenu = () => setMenuOpen(true);
+  const closeMenu = () => setMenuOpen(false);
 
   if (loading) {
     return (
@@ -94,7 +90,7 @@ const TestScreen = () => {
       </ScrollView>
 
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Icon name="bars" size={24} color="#000" />
+        <Image source={require("../../assets/noun-menu.png")} style={commonStyles.menuIcon} />
       </TouchableOpacity>
 
       <Menu isOpen={menuOpen} onClose={closeMenu} />

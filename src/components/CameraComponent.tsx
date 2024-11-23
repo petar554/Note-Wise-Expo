@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cameraIcon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
+    tintColor: "#FFFFFF",
   },
 });

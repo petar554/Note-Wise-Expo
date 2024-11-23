@@ -1,39 +1,40 @@
-import React, { useState } from "react"; 
+import React, { useState, useCallback } from "react"; 
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
 import useGetUserNotes from "../hooks/useGetUserNotes";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Menu from "../components/Menu";
-import Icon from "react-native-vector-icons/FontAwesome";
+import commonStyles from "../styles/commonStyles";
 
 const NotesListScreen = () => {
-  const { notes, loading, error } = useGetUserNotes();
+  const { notes, loading, error, fetchUserNotes } = useGetUserNotes();
   const navigation = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const openMenu = () => {
-    setMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const openMenu = () => setMenuOpen(true);
+  const closeMenu = () => setMenuOpen(false);
 
   const handleNoteClick = (note) => {
     navigation.navigate("NotesSummaryScreen", { notesId: note.notes_id });
   };
 
-  // #todo
-  // - Button "Create notes" navigates user to screen "2. Create new notes"
   const handleCreateNote = () => {
-    navigation.navigate("TestScreen");
+    navigation.navigate("CreateNewNoteScreen");
   };
+
+  // refresh notes when the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserNotes(); 
+    }, [fetchUserNotes])
+  );
 
   if (loading) {
     return (
@@ -80,7 +81,7 @@ const NotesListScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Icon name="bars" size={24} color="#000" />
+        <Image source={require("../../assets/noun-menu.png")} style={commonStyles.menuIcon} />
       </TouchableOpacity>
 
       <Menu isOpen={menuOpen} onClose={closeMenu} />

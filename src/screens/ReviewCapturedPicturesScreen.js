@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import useGetThumbnails from "../hooks/useGetThumbnails";
 import useNotesGeneration from "../hooks/useNotesGeneration";
-import Icon from "react-native-vector-icons/FontAwesome";
+import commonStyles from "../styles/commonStyles";
 import CameraIcon from "../../assets/camera.png";
 import DeleteIcon from "../../assets/delete.png";
 import Menu from "../components/Menu";
@@ -91,13 +91,8 @@ const ReviewCapturedPicturesScreen = ({ route, navigation }) => {
     }
   };
 
-  const openMenu = () => {
-    setMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const openMenu = () => setMenuOpen(true);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <View style={styles.container}>
@@ -130,7 +125,7 @@ const ReviewCapturedPicturesScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Icon name="bars" size={24} color="#000" />
+        <Image source={require("../../assets/noun-menu.png")} style={commonStyles.menuIcon} />
        </TouchableOpacity>
        <Menu isOpen={menuOpen} onClose={closeMenu} />
     </View>
@@ -191,8 +186,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cameraIcon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
+    tintColor: "#FFFFFF",
   },
   generateButton: {
     flex: 1,

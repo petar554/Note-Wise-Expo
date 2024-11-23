@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -7,7 +7,7 @@ const useGetUserNotes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchUserNotes = async () => {
+  const fetchUserNotes = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -21,8 +21,6 @@ const useGetUserNotes = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Response Error Text:", errorText);
         throw new Error("Failed to fetch notes.");
       }
 
@@ -34,13 +32,13 @@ const useGetUserNotes = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []); // Empty dependency array ensures this function is stable
 
   useEffect(() => {
     fetchUserNotes();
-  }, []);
+  }, [fetchUserNotes]);
 
-  return { notes, loading, error };
+  return { notes, loading, error, fetchUserNotes };
 };
 
 export default useGetUserNotes;

@@ -6,13 +6,14 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  Image,
   ScrollView,
 } from "react-native";
 import useGetNoteDetails from "../hooks/useGetNoteDetails";
 import useNotesGeneration from "../hooks/useNotesGeneration"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "../components/Menu";
-import Icon from "react-native-vector-icons/FontAwesome";
+import commonStyles from "../styles/commonStyles";
 
 const NotesSummaryScreen = () => {
   const route = useRoute();
@@ -35,7 +36,7 @@ const NotesSummaryScreen = () => {
           try {
             await deleteNote(notesId);
             Alert.alert("Success", "Note deleted successfully.");
-            navigation.goBack(); // Navigate back to the notes list
+            navigation.goBack(); // navigate back to the notes list
           } catch (err) {
             Alert.alert("Error", "Failed to delete the note.");
           }
@@ -85,11 +86,11 @@ const NotesSummaryScreen = () => {
 
       <View style={styles.bottomActionContainer}>
         <TouchableOpacity onPress={handleDelete} style={styles.iconButton}>
-          <Icon name="trash" size={24} color="#000" />
+          <Image source={require("../../assets/delete.png")} style={styles.deleteIcon} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.iconButton}>
-          <Icon name="share-alt" size={24} color="#000" />
+          <Image source={require("../../assets/share.png")} style={styles.deleteIcon} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.startTestButton} onPress={handleStartTest}>
@@ -98,7 +99,7 @@ const NotesSummaryScreen = () => {
       </View>
 
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Icon name="bars" size={24} color="#000" />
+        <Image source={require("../../assets/noun-menu.png")} style={commonStyles.menuIcon} />
       </TouchableOpacity>
 
       <Menu isOpen={menuOpen} onClose={closeMenu} />
@@ -199,6 +200,11 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "400",
     fontSize: 16,
+  },
+  deleteIcon: {
+    width: 24, 
+    height: 24, 
+    resizeMode: "contain",
   },
   menuButton: {
     position: "absolute",

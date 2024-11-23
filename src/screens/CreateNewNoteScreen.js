@@ -9,9 +9,9 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import useCreateNote from "../hooks/useCreateNote";
+import commonStyles from "../styles/commonStyles";
 import Menu from "../components/Menu";
 
 const { width } = Dimensions.get("window");
@@ -37,14 +37,9 @@ const CreateNewNoteScreen = () => {
     }
   };
 
-  const openMenu = () => {
-    setMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
+  const openMenu = () => setMenuOpen(true);
+  const closeMenu = () => setMenuOpen(false);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Let's create a new note</Text>
@@ -67,7 +62,7 @@ const CreateNewNoteScreen = () => {
         )}
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuButton} onPress={openMenu}>
-        <Icon name="bars" size={24} color="#000" />
+        <Image source={require("../../assets/noun-menu.png")} style={commonStyles.menuIcon} />
       </TouchableOpacity>
       <Menu isOpen={menuOpen} onClose={closeMenu} />
     </View>
